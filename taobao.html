@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.min.js"></script>
+    <style>
+        *{margin:0;padding:0}
+        .clear{clear:both;}
+        .type{width:750px;height:50px;border-bottom:1px #dcdcdc dashed;margin:auto;}
+        .type li{height:25px;border-radius:4px;line-height:25px;margin-top:12.5px;list-style: none;float:left;color:#0a5c9a;
+            font-size:14px;margin-right:15px;padding:0 8px}
+        .type p{margin-left:50px;color:#666;float:left;margin-top:15px;margin-right:8px;}
+        .type .active{cursor:pointer;background: coral;color:#fff;}
+        .selected{height:60px;}
+        .options{height:60px;line-height:60px;display:inline-block;font-size:14px;color:#3c3d46;margin-left:50px;}
+        .selected_or_not{height:60px;line-height:60px;display:inline-block;font-size:14px;color:#999;}
+        .selected li{background: coral;color:#fff;height:25px;line-height:25px;margin-top:17.5px;border-radius: 4px;display:inline-block;padding:0 8px;margin-right:5px;}
+        .type li:not(.active):hover{cursor:pointer;background:#FFE7BA;color:coral;}
+        .close{cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div style="width:800px;margin:auto;border:1px solid #dcdcdc;border-radius: 4px;margin-top:50px;">
+        <ul class="type upper">
+            <p>上装：</p>
+            <li class="all active">全部</li>
+            <li>针织衫</li>
+            <li>毛呢外套</li>
+            <li>T恤</li>
+            <li>羽绒服</li>
+            <li>棉衣</li>
+            <li>卫衣</li>
+            <li>风衣</li>
+            <div class="clear"></div>
+        </ul>
+        <ul class="type pants">
+            <p>裤装：</p>
+            <li class="all active">全部</li>
+            <li>牛仔裤</li>
+            <li>小脚/铅笔裤</li>
+            <li>休闲裤</li>
+            <li>打底裤</li>
+            <li>哈伦裤</li>
+            <div class="clear"></div>
+        </ul>
+        <ul class="type skirt">
+            <p>裙装：</p>
+            <li class="all active">全部</li>
+            <li>连衣裙</li>
+            <li>半身裙</li>
+            <li>长袖连衣裙</li>
+            <li>中长款连衣裙</li>
+            <div class="clear"></div>
+        </ul>
+        <ul class="selected">
+            <p class="options">已选条件：</p>
+            <p class="selected_or_not">暂时没有选择过滤条件</p>
+        </ul>
+    </div>
+    <script>
+        //选择商品添加到已选中
+        $(".type>li").not(".all").click(function(){
+            $(this).addClass("active").siblings("li").removeClass("active");
+            if($(this).parent().hasClass("upper")){
+                if($("#upper").length){
+                    $("#upper").html($(this).html()+"<a class='close'>×</a>")
+                }else{
+                    $(".selected").append("<li id='upper'>"+$(this).html()+"<a class='close'>×</a></li>")
+                }
+            }else if($(this).parent().hasClass("pants")){
+                if($("#pants").length){
+                    $("#pants").html($(this).html()+"<a class='close'>×</a>")
+                }else{
+                    $(".selected").append("<li id='pants'>"+$(this).html()+"<a class='close'>×</a></li>")
+                }
+            }else if($(this).parent().hasClass("skirt")){
+                if($("#skirt").length){
+                    $("#skirt").html($(this).html()+"<a class='close'>×</a>")
+                }else{
+                    $(".selected").append("<li id='skirt'>"+$(this).html()+"<a class='close'>×</a></li>")
+                }
+            }
+            if($(".selected li").length){
+                $(".selected_or_not").remove();
+            }
+        });
+        //全部按钮点击事件
+        $(".all").click(function(){
+            $(this).addClass("active").siblings("li").removeClass("active");
+            if($(this).parent().hasClass("upper")){
+                $("#upper").remove();
+            }else if($(this).parent().hasClass("pants")){
+                $("#pants").remove();
+            }else if($(this).parent().hasClass("skirt")){
+                $("#skirt").remove();
+            }
+            if(!$(".selected li").length){
+                $(".selected").append("<p class='selected_or_not'>暂时没有选择过滤条件</p>");
+            }
+        });
+        //关闭按钮点击事件
+        $(".selected").on("click",".close",function(){
+            $(this).parent().remove();
+            $("."+$(this).parent().attr("id")).children("li").removeClass("active").eq(0).addClass("active");
+            if(!$(".selected li").length){
+                $(".selected").append("<p class='selected_or_not'>暂时没有选择过滤条件</p>");
+            }
+        });
+    </script>
+</body>
+</html>
